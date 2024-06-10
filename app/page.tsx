@@ -2,11 +2,11 @@ import React from 'react'
 import Header from './_components/header'
 import Search from './_components/search'
 import CategoryList from './_components/category-list'
-import Image from 'next/image'
 import ProductList from './_components/product-list'
 import { Button } from './_components/ui/button'
-import { ChevronRightIcon, Ghost } from 'lucide-react'
+import { ChevronRightIcon} from 'lucide-react'
 import { db } from './_lib/prisma'
+import PromoBanner from './_components/promo-banner'
 
 
 const Home = async () => {
@@ -38,15 +38,11 @@ const Home = async () => {
       </div>
 
       <div className="px-5 pt-6">
-        <Image 
-          src="/promo-banner-pizza.webp" 
-          alt="Até 30% de desconto em pizzas"
-          height={0}
-          width={0}
-          className='w-full h-auto object-contain'
-          sizes='100vw'
-          quality={100}
+        <PromoBanner 
+        src="/promo-banner-01.webp"
+        alt='até 30% de descontos em pizzas'
         />
+
       </div>
 
       <div className="pt-6 space-y-4">
@@ -60,6 +56,13 @@ const Home = async () => {
           </Button>
         </div>
         <ProductList products={products}/>
+      </div>
+
+      <div className="px-5 pt-6">
+        <PromoBanner 
+          src="/promo-banner-02.webp"
+          alt='A partir de R$ 17,90 em lanches' 
+        />
       </div>
     </>
   )
