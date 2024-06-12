@@ -7,6 +7,7 @@ import { Button } from './_components/ui/button'
 import { ChevronRightIcon} from 'lucide-react'
 import { db } from './_lib/prisma'
 import PromoBanner from './_components/promo-banner'
+import RestaurantList from './_components/restaurant-list'
 
 
 const Home = async () => {
@@ -63,6 +64,19 @@ const Home = async () => {
           src="/promo-banner-02.webp"
           alt='A partir de R$ 17,90 em lanches' 
         />
+      </div>
+
+      <div className="space-y-4 py-6">
+        <div className='px-5 flex justify-between items-center'>
+          <h2 className='font-semibold'>
+            Restaurantes recomendados
+          </h2>
+          <Button variant='ghost' className='h-fit p-0 text-primary hover:bg-transparent'>
+            Ver todos
+            <ChevronRightIcon size={16}/>
+          </Button>
+        </div>
+        <RestaurantList />
       </div>
     </>
   )
