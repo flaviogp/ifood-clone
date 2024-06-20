@@ -4,6 +4,7 @@ import CartItem from "./cart-item";
 import { Card, CardContent } from "./ui/card";
 import { formatCurrency } from "../_helpers/price";
 import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
 
 const Cart = () => {
   const { products, subTotalPrice, totalDiscounts, totalPrice } =
@@ -15,6 +16,7 @@ const Cart = () => {
           <CartItem key={product.id} cartProduct={product} />
         ))}
       </div>
+
       <div className="mt-6">
         <Card>
           <CardContent className="space-y-2 p-5">
@@ -51,6 +53,8 @@ const Cart = () => {
           </CardContent>
         </Card>
       </div>
+
+      <Button className="mt-6 w-full">Finalizar pedido</Button>
     </div>
   );
 };
