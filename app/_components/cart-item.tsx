@@ -55,7 +55,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
           </div>
 
           {/* Quantidade */}
-          <div className="flex items-center gap-2 text-center">
+          <div className="flex items-center text-center">
             <Button
               size={"icon"}
               variant={"ghost"}
@@ -67,7 +67,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
               />
             </Button>
 
-            <span className="block w-3 text-xs">{cartProduct.quantity}</span>
+            <span className="block w-8 text-xs">{cartProduct.quantity}</span>
 
             <Button
               size={"icon"}
