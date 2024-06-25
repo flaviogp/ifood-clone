@@ -21,6 +21,7 @@ model Restaurant {
   deliveryTimeMinutes Int
   categories          Category[]
   products            Product[]
+  Orders              Order[]
 }
 
 model Category {
@@ -44,56 +45,84 @@ model Product {
   categoryId         String
   category           Category   @relation(fields: [categoryId], references: [id])
   createdAt          DateTime   @default(now())
+  Orders             Order[]
+  orderId            String?
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id])
+  products       Product[]
+  restaurant     Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId   String
+  deliveryFee    Decimal     @db.Decimal(10, 2)
+  deliveryTime   Int
+  subTotalPrice  Decimal     @db.Decimal(10, 2)
+  totalPrice     Decimal     @db.Decimal(10, 2)
+  totalDiscounts Decimal     @db.Decimal(10, 2)
+  status         OrderStatus
+  createdAt      DateTime    @default(now())
+}
+
+enum OrderStatus {
+  CONFIRMED
+  CANCELED
+  PREPARING
+  DELIVERING
+  COMPLETED
 }
 
 // NEXT AUTH
 
 model Account {
-  id                 String    @id @default(cuid())
-  userId             String
-  providerType       String
-  providerId         String
-  providerAccountId  String
-  refreshToken       String?
-  accessToken        String?
-  accessTokenExpires DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
-  @@unique([providerId, providerAccountId])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
   id           String   @id @default(cuid())
-  userId       String
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
-  sessionToken String   @unique
-  accessToken  String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
+  emailVerified DateTime? @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  Order         Order[]
+
+  @@map("users")
 }
 
-model VerificationRequest {
-  id         String   @id @default(cuid())
+model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String
   expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+  @@map("verificationtokens")
 }
