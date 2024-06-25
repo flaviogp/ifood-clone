@@ -3,7 +3,14 @@
 import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
-import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import {
+  HeartIcon,
+  HomeIcon,
+  LogInIcon,
+  LogOutIcon,
+  MenuIcon,
+  ScrollTextIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
@@ -14,11 +21,22 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 
 const Header = () => {
-  const { data } = useSession();
+  // const { data } = useSession();
+  const data = {
+    user: {
+      name: "Flavio Gomes",
+      image: undefined,
+      email: "flavio.gpinheiro@outlook.com",
+    },
+  };
 
   const handleSignOutClick = () => signOut();
+
+  const handleSignInClick = () => signIn();
+
   return (
     <header className="flex justify-between px-5 pb-0 pt-6">
       <Link href="/">
@@ -59,21 +77,66 @@ const Header = () => {
                     </span>
                   </div>
                 </div>
-
-                <Button size={"icon"} onClick={handleSignOutClick}>
-                  <LogOutIcon size={"20"} />
-                </Button>
               </div>
             </>
           ) : (
             <>
               <div className="flex w-full items-center justify-between pt-10">
                 <h2 className="font-semibold">Faça seu login</h2>
-                <Button size={"icon"} onClick={() => signIn()}>
+                <Button size={"icon"} onClick={handleSignInClick}>
                   <LogInIcon />
                 </Button>
               </div>
             </>
+          )}
+
+          <div className="py-6">
+            <Separator />
+          </div>
+
+          <div className="space-y-2">
+            <Button
+              variant={"ghost"}
+              className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+            >
+              <HomeIcon size={16} />
+              <span className="block">Inicio</span>
+            </Button>
+
+            {data?.user && (
+              <>
+                <Button
+                  variant={"ghost"}
+                  className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+                >
+                  <ScrollTextIcon size={16} />
+                  <span className="block">Meus pedidos</span>
+                </Button>
+
+                <Button
+                  variant={"ghost"}
+                  className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+                >
+                  <HeartIcon size={16} />
+                  <span className="block">Restaurantes favoritos</span>
+                </Button>
+              </>
+            )}
+          </div>
+
+          <div className="py-6">
+            <Separator />
+          </div>
+
+          {data?.user && (
+            <Button
+              variant={"ghost"}
+              className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+              onClick={handleSignOutClick}
+            >
+              <LogOutIcon size={16} />
+              <span className="block">Sair da conta</span>
+            </Button>
           )}
         </SheetContent>
       </Sheet>
